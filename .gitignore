@@ -1,0 +1,24 @@
+
+### Maven template
+target/
+src/test/
+
+### Java template
+# Compiled class file
+*.class
+
+### Log file
+*.log
+
+### Package Files
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+*.apk
+
+### IDEA
+.idea/
+*.iml
