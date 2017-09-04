@@ -1,19 +1,15 @@
 package com.cn.striverfeng.core;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+import java.util.*;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import com.cn.striverfeng.common.ApiException;
-import com.cn.striverfeng.common.ApiRunnable;
 import com.cn.striverfeng.common.UtilJson;
 import com.cn.striverfeng.pojo.Goods;
 import org.codehaus.jackson.JsonParseException;
@@ -81,7 +77,7 @@ public class ApiGatewayHand implements InitializingBean, ApplicationContextAware
 		String params=request.getParameter(PARAMS);
 		String method=request.getParameter(METHOD);
 		Object result;
-		ApiRunnable apiRun=null;
+		ApiStore.ApiRunnable apiRun=null;
 		try {
 			apiRun=sysParamsValdate(request);
 			logger.info("请求接口={"+method+"} 参数="+params+"");
@@ -118,7 +114,6 @@ public class ApiGatewayHand implements InitializingBean, ApplicationContextAware
 			String json= UtilJson.writeValueAsString(result);
 			response.setCharacterEncoding("UTF-8");
 			response.setContentType("application/html/json;charset=utf-8");
-//			response.setContentType("text/html/json;charset=utf-8");
 			response.setHeader("Pragma", "no-cacahe");
 			response.setDateHeader("Expires", 0);
 			if (json !=null) {
@@ -144,26 +139,24 @@ public class ApiGatewayHand implements InitializingBean, ApplicationContextAware
 
         String message="";
         if (throwable instanceof ApiException){
-			return new ApiException(throwable.getMessage()).getMessage();
+            code="0001";
+            message=throwable.getMessage();
+        }else {
+            code="0002";
+            message=throwable.getMessage();
         }
-		return throwable;
+        Map<String,Object> result=new HashMap<String, Object>();
+        result.put("error",code);
+        result.put("msg",message);
+        ByteArrayOutputStream bos=new ByteArrayOutputStream();
+        PrintStream ps=new PrintStream(bos);
+        throwable.printStackTrace(ps);
+		return result;
 
 
 	}
 
-//	/**
-//	* @Title: handleError
-//	* @Description: TODO(这里用一句话描述这个方法的作用)
-//	* @param    参数
-//	* @return Object    返回类型
-//	* @author StriverFeng
-//	* @time 2017年8月13日下午3:59:58
-//	* @throws
-//	*/
-//	private Object handleError(ApiException e) {
-//		return e;
-// 
-//	}
+
 
 	/**
 	 * @throws ApiException 
@@ -174,8 +167,8 @@ public class ApiGatewayHand implements InitializingBean, ApplicationContextAware
 	* @time 2017年8月13日下午3:56:48
 	* @throws
 	*/
-	private Object[] bulidParams(ApiRunnable run, String paramJson, HttpServletRequest request,
-			HttpServletResponse response) throws ApiException{
+	private Object[] bulidParams(ApiStore.ApiRunnable run, String paramJson, HttpServletRequest request,
+								 HttpServletResponse response) throws ApiException{
 		Map<String,Object> map=null;
 		try {
 			map=UtilJson.toMap(paramJson);
@@ -200,11 +193,12 @@ public class ApiGatewayHand implements InitializingBean, ApplicationContextAware
 				args[i]=request;
 			}else if (map.containsKey(paramNames.get(i))) {
 				try {
-					args[i]=UtilJson.covertValue(map.get(paramNames.get(i)),paramTypes[i]);
-//					args[i]convertJsonToBean((String)map.get(paramNames.get(i)),paramTypes[i]);
+					args[i]=convertJsonToBean(map.get(paramNames.get(i)),paramTypes[i]);
 				} catch (Exception e) {
 					 throw new ApiException("调用失败:指定参数格式错误或值错误'"+paramNames.get(i)+"'"+e.getMessage());
 				} 
+			} else {
+				args[i] =null;
 			}
 		}
 		return args;
@@ -219,11 +213,30 @@ public class ApiGatewayHand implements InitializingBean, ApplicationContextAware
 	* @time 2017年8月13日下午4:31:23
 	* @throws
 	*/
-	private <T> Object convertJsonToBean(String jsonStr, Class<T> clazz) {
-		
-		
-		
-		return null;
+	private <T> Object convertJsonToBean(Object val,Class<T> targetClass) throws IllegalAccessException, IOException, InstantiationException {
+		Object result=null;
+		if (null == val){
+		    return  null;
+        }else if (Integer.class.equals(targetClass)){
+		    result = Integer.parseInt(val.toString());
+        }else if (Long.class.equals(targetClass)){
+            return Long.parseLong(val.toString());
+        }else if (Date.class.equals(targetClass)){
+           if (val.toString().matches("[0-9]+")){
+               return new Date(Long.parseLong(val.toString()));
+           }else {
+               throw new IllegalArgumentException("日期必须是长整形的时间戳");
+           }
+        } else if (String.class.equals(targetClass)){
+            if (val instanceof String){
+                result = val;
+            }else {
+                throw new IllegalArgumentException("转换目标类型为字符串");
+            }
+        }else {
+            result = UtilJson.covertValue(val,targetClass);
+        }
+        return result;
 
 
 	}
@@ -238,10 +251,10 @@ public class ApiGatewayHand implements InitializingBean, ApplicationContextAware
 	* @time 2017年8月13日下午3:45:40
 	* @throws
 	*/
-	private ApiRunnable sysParamsValdate(HttpServletRequest request) throws ApiException{
+	private ApiStore.ApiRunnable sysParamsValdate(HttpServletRequest request) throws ApiException{
 		String apiName=request.getParameter(METHOD);
 		String json=request.getParameter(PARAMS);
-		ApiRunnable api;
+		ApiStore.ApiRunnable api;
 		if (apiName == null || apiName.trim().equals("")) {
 			throw new ApiException("调用失败:参数'method'为空");
 			

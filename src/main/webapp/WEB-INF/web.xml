@@ -36,8 +36,8 @@
     <!--ApiGatewayServlet-->
 <!--    <servlet>
         <servlet-name>apiServlet</servlet-name>
-        <servlet-class>com.cn.hnust.core.ApiGatewayServlet</servlet-class>
-        <load-on-startup>1</load-on-startup>
+        <servlet-class>com.cn.striverfeng.core.ApiGatewayServlet</servlet-class>
+        <load-on-startup>2</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>apiServlet</servlet-name>
