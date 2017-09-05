@@ -10,7 +10,7 @@
         var  params={userId:"5"};
         var jsonStr= JSON.stringify(params);
         $.ajax({
-            type: 'POST',
+            type: 'GET',
             url: "/api",
             data: {"method":"com.cn.striverfeng.service.userService",params:jsonStr},
             success: function(data) {

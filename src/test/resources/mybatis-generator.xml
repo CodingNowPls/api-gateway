@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC
+        "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+
+    <!-- !!!! Driver Class Path !!!! -->
+    <classPathEntry location="C:\Users\Administrator\.m2\repository\mysql\mysql-connector-java\5.1.18\mysql-connector-java-5.1.18.jar"/>
+    <context id="context" targetRuntime="MyBatis3">
+
+        <property name="javaFileEncoding" value="UTF-8"/>
+
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+            <property name="suppressDate" value="false"/>
+        </commentGenerator>
+
+        <!-- !!!! Database Configurations !!!! -->
+        <jdbcConnection driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql://localhost/test" userId="root" password="root"/>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <!-- !!!! Model Configurations !!!! -->
+        <javaModelGenerator targetPackage="com.cn.striverfeng.pojo" targetProject="src/main/java">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <!-- !!!! Mapper XML Configurations !!!! -->
+        <sqlMapGenerator targetPackage="com.cn.striverfeng.mapping" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <!-- !!!! Mapper Interface Configurations !!!! -->
+        <javaClientGenerator targetPackage="com.cn.striverfeng.mapping" targetProject="src/main/java" type="XMLMAPPER">
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!-- !!!! Table Configurations !!!! -->
+        <table tableName="t_user" enableCountByExample="false" enableDeleteByExample="false" enableSelectByExample="false"
+               enableUpdateByExample="false" domainObjectName="TUser"/>
+    </context>
+</generatorConfiguration>
