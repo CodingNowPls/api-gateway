@@ -18,7 +18,7 @@ public class UserServiceImpl implements IUserService {
 		// TODO Auto-generated method stub
 		return this.userDao.selectByPrimaryKey(userId);
 	}
-	@APIMapping("com.cn.striverfeng.service.userService")
+	@APIMapping("com.striverfeng.service.userService")
 	public User getUser(String userId){
 		Assert.notNull(userId);
 		User user=new User();

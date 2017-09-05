@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 public class GoodsServiceImpl {
 	
 	
-	@APIMapping("com.cn.striverfeng.service.goodsService")
+	@APIMapping("com.striverfeng.service.goodsService")
 	public Goods addGoods(Goods goods, Integer id){
 		return goods;
 	}
