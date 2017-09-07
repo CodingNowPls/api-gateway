@@ -7,12 +7,12 @@
 
 
     function invokeApi() {
-        var  params={userId:"5"};
+        var  params={userId:5};
         var jsonStr= JSON.stringify(params);
         $.ajax({
             type: 'GET',
             url: "/api",
-            data: {"method":"com.cn.striverfeng.service.userService",params:jsonStr},
+            data: {"method":"com.striverfeng.service.userService.getUser",params:jsonStr},
             success: function(data) {
                 alert(data);
                 console.info(data);
@@ -23,6 +23,6 @@
 </script>
 <body>
 <%--<h2>index!</h2>--%>
-<button onclick="invokeApi()">invokeApi</button>
+<button onclick="invokeApi()">调用api示例</button>
 </body>
 </html>

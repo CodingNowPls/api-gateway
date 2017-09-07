@@ -113,7 +113,7 @@ public class ApiGatewayHand implements InitializingBean, ApplicationContextAware
 //			UtilJson.JSON_MAPPER.configure(SerializationFeature.WRITE_NULL_MAP_VALUES,true);
 			String json= UtilJson.writeValueAsString(result);
 			response.setCharacterEncoding("UTF-8");
-			response.setContentType("application/html/json;charset=utf-8");
+			response.setContentType("application/json;charset=utf-8");
 			response.setHeader("Pragma", "no-cacahe");
 			response.setDateHeader("Expires", 0);
 			if (json !=null) {

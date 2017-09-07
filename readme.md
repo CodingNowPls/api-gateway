@@ -1,11 +1,10 @@
-##项目还不是很完善
+# 项目还不是很完善
+### API访问示例URL http://localhost:8080/api?method=com.striverfeng.service.userService.getUser&params={"userId":1}
 
-http://127.0.0.1/api?method=method=com.cn.striverfeng.service.userService&params={"userId":"123"}
-http://127.0.0.1/api?method=com.cn.striverfeng.service.userService&params=%7B%22userId%22%3A%225%22%7D
-后续扩展
-1.API文档结构自动生成
-2.API Mock
-3.API自动化测试工具集成
-4.接口版本管理
-5.接口缓存
-6.授权与验证
+## 后续扩展
+### 1.API文档结构自动生成
+### 2.API Mock
+### 3.API自动化测试工具集成
+### 4.接口版本管理
+### 5.接口缓存
+### 6.授权与验证

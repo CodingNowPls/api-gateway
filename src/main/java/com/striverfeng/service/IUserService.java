@@ -6,5 +6,5 @@ public interface IUserService {
 
 	User getUserById(int userId);
 
-	User getUser(String userId);
+	User getUser(Integer userId);
 }

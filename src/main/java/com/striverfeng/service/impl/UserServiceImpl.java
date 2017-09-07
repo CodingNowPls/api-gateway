@@ -19,11 +19,11 @@ public class UserServiceImpl implements IUserService {
 		return this.userDao.selectByPrimaryKey(userId);
 	}
 	@APIMapping("com.striverfeng.service.userService.getUser")
-	public User getUser(String userId){
+	public User getUser(Integer userId){
 		Assert.notNull(userId);
 		User user=new User();
 		user.setAge(12);
-		user.setId(Integer.valueOf(userId));
+		user.setId(userId);
 		user.setPassword("123456");
 		user.setUserName("张三");
 		return  user;
